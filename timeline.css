@@ -1,0 +1,45 @@
+.clearfix:after {
+    clear: both;
+    content: '.';
+    visibility: hidden;
+}
+
+.timeline-content-container {
+    height: 200px;
+    width: 100%;
+
+    overflow: hidden;
+
+    background: #f55;
+}
+
+.timeline-year-index {
+    height: 50px;
+    width: inherit;
+    background: #5f5;
+    text-align: center;
+}
+
+.timeline-scrollbar {
+    height: 32px;
+    width: inherit;
+    background: #55f;
+}
+
+.timeline-content {
+    width: 2000px;
+}
+
+.timeline-content .year {
+    height: 200px;
+    width: 200px;
+
+    float: left;
+}
+
+.timeline-year-index .year {
+    height: 50px;
+    width: 50px;
+    display: block;
+    float: left;
+}
