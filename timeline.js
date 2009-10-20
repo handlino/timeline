@@ -52,13 +52,29 @@ if (!jQuery) { throw("Timeline requires jQuery"); }
 
         bind_mouse_events: function() {
             var year_width = $(".timeline-content .year").width();
-            var tl = this;
+            var self = this;
+
+            var year_divs = $(".timeline-year-index .year", self.el).size();
+            var year_divs_in_viewport  = $(self.el).width()/year_width;
+            var middle_ordinal = parseInt( year_divs_in_viewport/2 ) + 1;
+
             $(".timeline-year-index .year", this.el).bind(
                 "click",
                 function() {
-                    $(".timeline-content", tl.el).animate({
-                        "marginLeft": -1 * year_width * $(".timeline-year-index .year", tl.el).index(this)
-                    });
+                    var i = $(".timeline-year-index .year", self.el).index(this);
+
+                    var l;
+                    if (i < middle_ordinal) {
+                        l = 0;
+                    }
+                    else if (i > year_divs - parseInt(year_divs_in_viewport)) {
+                        l = -1 * year_width * (year_divs - year_divs_in_viewport);
+                    }
+                    else {
+                        l = -1 * year_width * (i - middle_ordinal + 1);
+                    }
+
+                    $(".timeline-content", self.el).animate({"marginLeft": l});
                     return false;
                 }
             );
