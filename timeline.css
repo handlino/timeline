@@ -4,7 +4,7 @@
     visibility: hidden;
 }
 
-.timeline-content-container {
+.timeline-wrapper {
     height: 200px;
     width: 100%;
 
@@ -26,18 +26,18 @@
     background: #55f;
 }
 
-.timeline-content {
+.timeline-band {
     width: 2000px;
 }
 
-.timeline-content .year {
+.timeline-band .timeline-content {
     height: 200px;
     width: 200px;
 
     float: left;
 }
 
-.timeline-year-index .year {
+.timeline-year-index .timeline-year {
     height: 50px;
     width: 50px;
     display: block;

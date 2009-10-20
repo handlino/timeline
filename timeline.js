@@ -29,7 +29,7 @@ if (!jQuery) { throw("Timeline requires jQuery"); }
             var self = this;
 
             this.el.innerHTML =
-                '<div class="timeline-content-container clearfix"><div class="timeline-content"></div></div>'    +
+                '<div class="timeline-wrapper clearfix"><div class="timeline-band"></div></div>'    +
                 '<div class="timeline-year-index clearfix"></div>' +
                 '<div class="timeline-scrollbar clearfix"></div>';
 
@@ -38,30 +38,30 @@ if (!jQuery) { throw("Timeline requires jQuery"); }
                 var y = this[0].getFullYear();
                 years.push(y);
 
-                $(".timeline-content", self.el).append('<div class="year">' + this[1] + '</div>');
-                $(".timeline-year-index", self.el).append('<a class="year" href="javascript:void(0);">' + y + '</a>');
+                $(".timeline-band", self.el).append('<div class="timeline-content">' + this[1] + '</div>');
+                $(".timeline-year-index", self.el).append('<a class="timeline-year" href="javascript:void(0);">' + y + '</a>');
             });
 
-            var year_width = $(".timeline-content .year").width();
-            $(".timeline-content", this.el).width(year_width * years.length);
+            var year_width = $(".timeline-band .timeline-content").width();
+            $(".timeline-band", this.el).width(year_width * years.length);
 
-            $(".timeline-year-index .year", this.el).css({
+            $(".timeline-year-index .timeline-year", this.el).css({
                 "width": $(this.el).width() / years.length
             });
         },
 
         bind_mouse_events: function() {
-            var year_width = $(".timeline-content .year").width();
+            var year_width = $(".timeline-band .timeline-content").width();
             var self = this;
 
-            var year_divs = $(".timeline-year-index .year", self.el).size();
+            var year_divs = $(".timeline-year-index .timeline-year", self.el).size();
             var year_divs_in_viewport  = $(self.el).width()/year_width;
             var middle_ordinal = parseInt( year_divs_in_viewport/2 ) + 1;
 
-            $(".timeline-year-index .year", this.el).bind(
+            $(".timeline-year-index .timeline-year", this.el).bind(
                 "click",
                 function() {
-                    var i = $(".timeline-year-index .year", self.el).index(this);
+                    var i = $(".timeline-year-index .timeline-year", self.el).index(this);
 
                     var l;
                     if (i < middle_ordinal) {
@@ -74,7 +74,7 @@ if (!jQuery) { throw("Timeline requires jQuery"); }
                         l = -1 * year_width * (i - middle_ordinal + 1);
                     }
 
-                    $(".timeline-content", self.el).animate({"marginLeft": l});
+                    $(".timeline-band", self.el).animate({"marginLeft": l});
                     return false;
                 }
             );
