@@ -9,7 +9,6 @@
     width: 100%;
 
     overflow: hidden;
-
     background: #f55;
 }
 
@@ -27,7 +26,7 @@
 }
 
 .timeline-band {
-    width: 2000px;
+    width: 20000px;
 }
 
 .timeline-band .timeline-content {

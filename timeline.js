@@ -15,12 +15,15 @@ if (!jQuery) { throw("Timeline requires jQuery"); }
          */
         init: function(args) {
             if ( !args.el ) throw("Cannot initialize a Timeline without an element (the 'el' argument)");
-            if ( !args.el ) throw("Cannot initialize a Timeline without any data (the 'data' argument)");
 
             this.el = args.el;
-            this.data = args.data;
 
-            this.build();
+            if ( args.data ) {
+                this.data = args.data;
+                this.build();
+            }
+
+            this.setup_style();
             this.bind_mouse_events();
         },
 
@@ -29,7 +32,7 @@ if (!jQuery) { throw("Timeline requires jQuery"); }
             var self = this;
 
             this.el.innerHTML =
-                '<div class="timeline-wrapper clearfix"><div class="timeline-band"></div></div>'    +
+                '<div class="timeline-wrapper clearfix"><div class="timeline-band"></div></div>' +
                 '<div class="timeline-year-index clearfix"></div>' +
                 '<div class="timeline-scrollbar clearfix"></div>';
 
@@ -44,10 +47,9 @@ if (!jQuery) { throw("Timeline requires jQuery"); }
 
             var year_width = $(".timeline-band .timeline-content").width();
             $(".timeline-band", this.el).width(year_width * years.length);
+        },
 
-            $(".timeline-year-index .timeline-year", this.el).css({
-                "width": $(this.el).width() / years.length
-            });
+        setup_style: function() {
         },
 
         bind_mouse_events: function() {
