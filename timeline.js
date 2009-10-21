@@ -95,16 +95,33 @@ if (!jQuery) { throw("Timeline requires jQuery"); }
             );
 
             var $scrollbar = $(".timeline-scrollbar", self.el);
+
             var scrollbar_width = $scrollbar.width();
             var scrollbar_offset = $scrollbar.offset();
             var timeline_band_width = $(".timeline-band", self.el).width();
             var year_index_width = $(".timeline-year-index", self.el).width();
 
+            var threshold_left  = 100;
+            var threshold_right = 100;
+            scrollbar_width -= (threshold_left + threshold_right);
+
             var marginLeft = function(x, w) {
+                if (x < threshold_left) {
+                    return 0;
+                }
+                x-=  threshold_left;
+
+                if (x > scrollbar_width) {
+                    x = scrollbar_width;
+                }
+
                 var x_percentage = x / scrollbar_width;
-                return -1 * x_percentage * (w - scrollbar_width);
+                var l = -1 * x_percentage * (w - scrollbar_width - threshold_left - threshold_right);
+
+                return l;
             };
-            $scrollbar.bind("mousemove", function(e) {
+
+            $(self.el).bind("mousemove", function(e) {
                 var x = e.pageX - scrollbar_offset.left;
 
                 $(".timeline-band", self.el).css({

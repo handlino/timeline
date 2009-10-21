@@ -20,7 +20,7 @@
 }
 
 .timeline-scrollbar {
-    height: 32px;
+    height: 0px;
     width: 100%;
     background: #55f;
 }
