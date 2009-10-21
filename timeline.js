@@ -33,7 +33,7 @@ if (!jQuery) { throw("Timeline requires jQuery"); }
 
             this.el.innerHTML =
                 '<div class="timeline-wrapper clearfix"><div class="timeline-band"></div></div>' +
-                '<div class="timeline-year-index clearfix"></div>' +
+                '<div class="timeline-year-index-wrapper clearfix"><div class="timeline-year-index clearfix"></div></div>' +
                 '<div class="timeline-scrollbar clearfix"></div>';
 
             var years = [];
@@ -44,17 +44,28 @@ if (!jQuery) { throw("Timeline requires jQuery"); }
                 $(".timeline-band", self.el).append('<div class="timeline-content">' + this[1] + '</div>');
                 $(".timeline-year-index", self.el).append('<a class="timeline-year" href="javascript:void(0);">' + y + '</a>');
             });
-
-            var year_width = $(".timeline-band .timeline-content").width();
-            $(".timeline-band", this.el).width(year_width * years.length);
         },
 
         setup_style: function() {
+            var self = this;
+
+            var band_width = 0;
+            $(".timeline-band .timeline-content", self.el).each(function() {
+                band_width += $(this).outerWidth(true);
+            });
+            $(".timeline-band", self.el).width( band_width );
+
+            var year_index_width = 0;
+            $(".timeline-year-index .timeline-year", self.el).each(function() {
+                year_index_width += $(this).outerWidth(true);
+            });
+            $(".timeline-year-index", self.el).width( year_index_width );
         },
 
         bind_mouse_events: function() {
-            var year_width = $(".timeline-band .timeline-content").width();
             var self = this;
+
+            var year_width = $(".timeline-band .timeline-content", self.el).width();
 
             var year_divs = $(".timeline-year-index .timeline-year", self.el).size();
             var year_divs_in_viewport  = $(self.el).width()/year_width;
@@ -80,6 +91,28 @@ if (!jQuery) { throw("Timeline requires jQuery"); }
                     return false;
                 }
             );
+
+            var $scrollbar = $(".timeline-scrollbar", self.el);
+            var scrollbar_width = $scrollbar.width();
+            var scrollbar_offset = $scrollbar.offset();
+            var timeline_band_width = $(".timeline-band", self.el).width();
+            var year_index_width = $(".timeline-year-index", self.el).width();
+
+            var marginLeft = function(x, w) {
+                var x_percentage = x / scrollbar_width;
+                return -1 * x_percentage * w + scrollbar_width / 2;
+            };
+            $scrollbar.bind("mousemove", function(e) {
+                var x = e.pageX - scrollbar_offset.left;
+
+                $(".timeline-band", self.el).css({
+                    "marginLeft": marginLeft(x, timeline_band_width)
+                });
+
+                $(".timeline-year-index", self.el).css({
+                    "marginLeft": marginLeft(x, year_index_width)
+                });
+            });
         }
     };
 

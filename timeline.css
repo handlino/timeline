@@ -12,33 +12,37 @@
     background: #f55;
 }
 
-.timeline-year-index {
+.timeline-year-index-wrapper {
     height: 50px;
-    width: inherit;
+    width: 100%;
+    overflow: hidden;
     background: #5f5;
-    text-align: center;
 }
 
 .timeline-scrollbar {
     height: 32px;
-    width: inherit;
+    width: 100%;
     background: #55f;
 }
 
 .timeline-band {
-    width: 20000px;
 }
 
 .timeline-band .timeline-content {
     height: 200px;
     width: 200px;
-
+    border-left: 1px solid #a00;
+    border-right: 1px solid #f00;
     float: left;
 }
 
 .timeline-year-index .timeline-year {
     height: 50px;
-    width: 50px;
+    line-height: 50px;
+    width: 80px;
     display: block;
     float: left;
+    text-align: center;
+    border-left: 1px solid #a00;
+    border-right: 1px solid #f00;
 }
