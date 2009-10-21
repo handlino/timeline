@@ -11,7 +11,9 @@ if (!jQuery) { throw("Timeline requires jQuery"); }
          * data: an array of two-element arrays
          *   the first ones are Date objects, the second ones are strings of html content
          *
-         * eg: [ [t1, html1], [t2, html2] ]
+         *   eg: [ [t1, html1], [t2, html2] ]
+         *
+         *   If absent, it is assumed that the required html structure is already in the document.
          */
         init: function(args) {
             if ( !args.el ) throw("Cannot initialize a Timeline without an element (the 'el' argument)");
@@ -100,7 +102,7 @@ if (!jQuery) { throw("Timeline requires jQuery"); }
 
             var marginLeft = function(x, w) {
                 var x_percentage = x / scrollbar_width;
-                return -1 * x_percentage * w + scrollbar_width / 2;
+                return -1 * x_percentage * (w - scrollbar_width);
             };
             $scrollbar.bind("mousemove", function(e) {
                 var x = e.pageX - scrollbar_offset.left;
