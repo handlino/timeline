@@ -121,7 +121,7 @@ if (!jQuery) { throw("Timeline requires jQuery"); }
                 return l;
             };
 
-            $(self.el).bind("mousemove", function(e) {
+            $(".timeline-year-index", self.el).bind("mousemove", function(e) {
                 var x = e.pageX - scrollbar_offset.left;
 
                 $(".timeline-band", self.el).css({
