@@ -78,8 +78,8 @@ if (!jQuery) { throw("Timeline requires jQuery"); }
         },
 
         bind_mouse_events: function() {
-            if (this.scrollers) this.bind_mouse_events_of_scrollers()
-            else this.bind_mouse_events_of_index();
+            this.bind_mouse_events_of_scrollers()
+            this.bind_mouse_events_of_index();
         },
 
         bind_mouse_events_of_scrollers: function() {
@@ -87,29 +87,35 @@ if (!jQuery) { throw("Timeline requires jQuery"); }
             var self = this;
 
             var $bands = $(".timeline-band, .timeline-year-index", self.el);
+
             var scrolling;
-            $(this.scrollers[0]).hover(
+            $(this.scrollers[0]).bind("click",
                 function() {
-                    $bands.stop();
-                    $bands.animate({"margin-left": 0}, 3000);
-                },
-                function() {
-                    $bands.stop();
+                    $bands.each(function() {
+                        var step = $(".timeline-wrapper", self.el).outerWidth() / 3 * 2;
+
+                        var l = parseFloat( $(this).css("margin-left") );
+                        l += step;
+                        if (l > 0) l = 0;
+                        $(this).animate({"margin-left": l});
+                    });
+                    return false;
                 }
             );
 
-            $(this.scrollers[1]).hover(
+            $(this.scrollers[1]).bind("click",
                 function() {
-                    $bands.stop();
                     $bands.each(function() {
-                        $(this).animate(
-                            {"margin-left": -1 * ( $(this).outerWidth() - $(".timeline-wrapper", self.el).outerWidth() ) },
-                            3000
-                        );
+                        var step = $(".timeline-wrapper", self.el).outerWidth() / 3 * 2;
+
+                        var min = -1 * ($(this).outerWidth() - $(".timeline-wrapper", self.el).outerWidth());
+                        var l = parseFloat( $(this).css("margin-left") );
+
+                        l -= step;
+                        if (l < min) l = min;
+                        $(this).animate({"margin-left": l });
                     });
-                },
-                function() {
-                    $bands.stop();
+                    return false;
                 }
             );
         },
