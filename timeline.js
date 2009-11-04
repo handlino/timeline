@@ -84,44 +84,32 @@ if (!jQuery) { throw("Timeline requires jQuery"); }
 
         bind_mouse_events_of_scrollers: function() {
             if (!this.scrollers) return;
-
             var self = this;
-            var scroll = function(speed) {
-                $(".timeline-band, .timeline-year-index", self.el).each(function() {
-                    var $this = $(this);
 
-                    var l = parseFloat( $this.css("margin-left") );
-                    if (speed > 0 && l >= 0) return;
-                    var w = $this.outerWidth() - $(".timeline-wrapper", self.el).outerWidth();
-                    if (speed < 0 && l <= -1 * w) return;
-
-                    l += w * speed;
-                    $this.css({ "marginLeft": l });
-                });
-            };
-
+            var $bands = $(".timeline-band, .timeline-year-index", self.el);
             var scrolling;
             $(this.scrollers[0]).hover(
                 function() {
-                    if (scrolling) { clearInterval(scrolling); scrolling = null; }
-                    scrolling = setInterval(function() {
-                        scroll(0.005)
-                    }, 50);
+                    $bands.stop();
+                    $bands.animate({"margin-left": 0}, 3000);
                 },
                 function() {
-                    if (scrolling) { clearInterval(scrolling); scrolling = null; }
+                    $bands.stop();
                 }
             );
 
             $(this.scrollers[1]).hover(
                 function() {
-                    if (scrolling) { clearInterval(scrolling); scrolling = null; }
-                    scrolling = setInterval(function() {
-                        scroll(-0.005)
-                    }, 50);
+                    $bands.stop();
+                    $bands.each(function() {
+                        $(this).animate(
+                            {"margin-left": -1 * ( $(this).outerWidth() - $(".timeline-wrapper", self.el).outerWidth() ) },
+                            3000
+                        );
+                    });
                 },
                 function() {
-                    if (scrolling) { clearInterval(scrolling); scrolling = null; }
+                    $bands.stop();
                 }
             );
         },
