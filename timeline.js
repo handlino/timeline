@@ -19,6 +19,19 @@ if (!jQuery) { throw("Timeline requires jQuery"); }
             if ( !args.el ) throw("Cannot initialize a Timeline without an element (the 'el' argument)");
 
             this.el = args.el;
+            if (args.scrollers) {
+                if (args.scrollers[0] && args.scrollers[1]) {
+                    if ( $(args.scrollers[0]).size() != 0 && $(args.scrollers[1]).size() ) {
+                        this.scrollers = args.scrollers;
+                    }
+                    else {
+                        throw("One (or both) of the scroller elements is missing.");
+                    }
+                }
+                else {
+                    throw("Scrollers should be given as an array of two elements, they can be either css selector strings, or the element objects.");
+                }
+            }
 
             if ( args.data ) {
                 this.data = args.data;
@@ -65,6 +78,55 @@ if (!jQuery) { throw("Timeline requires jQuery"); }
         },
 
         bind_mouse_events: function() {
+            if (this.scrollers) this.bind_mouse_events_of_scrollers()
+            else this.bind_mouse_events_of_index();
+        },
+
+        bind_mouse_events_of_scrollers: function() {
+            if (!this.scrollers) return;
+
+            var self = this;
+            var scroll = function(speed) {
+                $(".timeline-band, .timeline-year-index", self.el).each(function() {
+                    var $this = $(this);
+
+                    var l = parseFloat( $this.css("margin-left") );
+                    if (speed > 0 && l >= 0) return;
+                    var w = $this.outerWidth() - $(".timeline-wrapper", self.el).outerWidth();
+                    if (speed < 0 && l <= -1 * w) return;
+
+                    l += w * speed;
+                    $this.css({ "marginLeft": l });
+                });
+            };
+
+            var scrolling;
+            $(this.scrollers[0]).hover(
+                function() {
+                    if (scrolling) { clearInterval(scrolling); scrolling = null; }
+                    scrolling = setInterval(function() {
+                        scroll(0.005)
+                    }, 50);
+                },
+                function() {
+                    if (scrolling) { clearInterval(scrolling); scrolling = null; }
+                }
+            );
+
+            $(this.scrollers[1]).hover(
+                function() {
+                    if (scrolling) { clearInterval(scrolling); scrolling = null; }
+                    scrolling = setInterval(function() {
+                        scroll(-0.005)
+                    }, 50);
+                },
+                function() {
+                    if (scrolling) { clearInterval(scrolling); scrolling = null; }
+                }
+            );
+        },
+
+        bind_mouse_events_of_index: function() {
             var self = this;
 
             var year_width = $(".timeline-band .timeline-content", self.el).width();
@@ -132,6 +194,7 @@ if (!jQuery) { throw("Timeline requires jQuery"); }
                     "marginLeft": marginLeft(x, year_index_width)
                 });
             });
+
         }
     };
 
