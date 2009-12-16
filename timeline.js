@@ -123,10 +123,10 @@ if (!jQuery) { throw("Timeline requires jQuery"); }
         bind_mouse_events_of_index: function() {
             var self = this;
 
-            var year_width = $(".timeline-band .timeline-content", self.el).width();
+            var year_width = $(".timeline-band .timeline-content", self.el).outerWidth();
 
             var year_divs = $(".timeline-year-index .timeline-year", self.el).size();
-            var year_divs_in_viewport  = $(self.el).width()/year_width;
+            var year_divs_in_viewport  = $(self.el).outerWidth()/year_width;
             var middle_ordinal = parseInt( year_divs_in_viewport/2 ) + 1;
 
             $(".timeline-year-index .timeline-year", this.el).bind(
@@ -152,10 +152,11 @@ if (!jQuery) { throw("Timeline requires jQuery"); }
 
             var $scrollbar = $(".timeline-scrollbar", self.el);
 
-            var scrollbar_width = $scrollbar.width();
+            var scrollbar_width = $scrollbar.outerWidth();
             var scrollbar_offset = $scrollbar.offset();
-            var timeline_band_width = $(".timeline-band", self.el).width();
-            var year_index_width = $(".timeline-year-index", self.el).width();
+            var timeline_band_width = $(".timeline-band", self.el).outerWidth();
+            var year_index_width = $(".timeline-year-index", self.el).outerWidth();
+            var timeline_wrapper_width = $(".timeline-wrapper", self.el).width();
 
             var threshold_left  = 100;
             var threshold_right = 100;
@@ -170,10 +171,10 @@ if (!jQuery) { throw("Timeline requires jQuery"); }
                 if (x > scrollbar_width) {
                     x = scrollbar_width;
                 }
-
                 var x_percentage = x / scrollbar_width;
-                var l = -1 * x_percentage * (w - scrollbar_width - threshold_left - threshold_right);
 
+                var l = -1 * x_percentage * (w - scrollbar_width - threshold_left - threshold_right);
+                l -= scrollbar_width - timeline_wrapper_width;
                 return l;
             };
 
