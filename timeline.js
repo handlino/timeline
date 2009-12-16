@@ -160,21 +160,30 @@ if (!jQuery) { throw("Timeline requires jQuery"); }
 
             var threshold_left  = 100;
             var threshold_right = 100;
-            scrollbar_width -= (threshold_left + threshold_right);
 
-            var marginLeft = function(x, w) {
+            var timeline_wrapper_scrollbar_width_diff = scrollbar_width - timeline_wrapper_width;
+            var timeline_year_index_wrapper_scrollbar_width_diff = scrollbar_width - $(".timeline-year-index-wrapper", self.el).width();
+
+            scrollbar_width -= (threshold_left + threshold_right);
+            var marginLeft = function(x, w, el) {
                 if (x < threshold_left) {
                     return 0;
                 }
-                x-=  threshold_left;
+                x-= threshold_left;
 
                 if (x > scrollbar_width) {
                     x = scrollbar_width;
                 }
                 var x_percentage = x / scrollbar_width;
-
                 var l = -1 * x_percentage * (w - scrollbar_width - threshold_left - threshold_right);
-                l -= scrollbar_width - timeline_wrapper_width;
+
+                if (el == "band") {
+                    l -= timeline_wrapper_scrollbar_width_diff;
+                }
+                else if (el == "year-index") {
+                    l -= timeline_year_index_wrapper_scrollbar_width_diff;
+                }
+
                 return l;
             };
 
@@ -182,11 +191,11 @@ if (!jQuery) { throw("Timeline requires jQuery"); }
                 var x = e.pageX - scrollbar_offset.left;
 
                 $(".timeline-band", self.el).css({
-                    "marginLeft": marginLeft(x, timeline_band_width)
+                    "marginLeft": marginLeft(x, timeline_band_width, "band")
                 });
 
                 $(".timeline-year-index", self.el).css({
-                    "marginLeft": marginLeft(x, year_index_width)
+                    "marginLeft": marginLeft(x, year_index_width, "year-index")
                 });
             });
 
