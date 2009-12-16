@@ -88,16 +88,18 @@ if (!jQuery) { throw("Timeline requires jQuery"); }
 
             var $bands = $(".timeline-band, .timeline-year-index", self.el);
 
+            var timeline_wrapper_width = $(".timeline-wrapper", self.el).width();
+            var step = timeline_wrapper_width / 3 * 2;
+
             var scrolling;
             $(this.scrollers[0]).bind("click",
                 function() {
                     $bands.each(function() {
-                        var step = $(".timeline-wrapper", self.el).outerWidth() / 3 * 2;
-
                         var l = parseFloat( $(this).css("margin-left") );
                         l += step;
                         if (l > 0) l = 0;
-                        $(this).animate({"margin-left": l});
+
+                        $(this).animate({"marginLeft": l});
                     });
                     return false;
                 }
@@ -106,14 +108,12 @@ if (!jQuery) { throw("Timeline requires jQuery"); }
             $(this.scrollers[1]).bind("click",
                 function() {
                     $bands.each(function() {
-                        var step = $(".timeline-wrapper", self.el).outerWidth() / 3 * 2;
-
-                        var min = -1 * ($(this).outerWidth() - $(".timeline-wrapper", self.el).outerWidth());
+                        var min = -1 * ($(this).outerWidth() - timeline_wrapper_width);
                         var l = parseFloat( $(this).css("margin-left") );
-
                         l -= step;
                         if (l < min) l = min;
-                        $(this).animate({"margin-left": l });
+
+                        $(this).animate({"marginLeft": l});
                     });
                     return false;
                 }
